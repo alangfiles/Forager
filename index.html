@@ -2,14 +2,55 @@
     <head>
         <title>Columbus Foraging</title>
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        
         <style>
             #map { height: 100%; }
+            #moreInfo{
+                height: 300px;
+                width: 100%;
+                position: fixed;
+                bottom: 0;
+                background-color:rgba(0,0,0,0.5)
+            }
+            #closeMoreInfo{
+                padding: 12px 30px;
+                float: left;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
         <div id="map"></div>
+        <div id="moreInfo">
+            <a id="closeMoreInfo" class="moreInfoToggle"><i class="fa fa-arrow-circle-o-down fa-3x fa-inverse" ></i></a>
+        </div>
         <script>
+            var moreInfoOpen = true;
+            $(".moreInfoToggle").click(function(){
+                
+                if(moreInfoOpen){
+                    $("#moreInfo").animate({
+                        opacity: 0.35,
+                        height: "60",
+                      }, 1000, function() {
+                        $("#closeMoreInfo").html("<i class='fa fa-arrow-circle-o-up fa-3x fa-inverse' ></i>");
+                        moreInfoOpen = false;
+                      });
+                }
+                else{
+                    $("#moreInfo").animate({
+                        opacity: 1,
+                        height: "300",
+                      }, 1000, function() {
+                        $("#closeMoreInfo").html("<i class='fa fa-arrow-circle-o-down fa-3x fa-inverse' ></i>");
+                        moreInfoOpen = true;
+                      });
+                }
+            });
+            
             //initialize map
             var map = L.map('map').setView([40.036,-83.011], 12);
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -21,26 +62,45 @@
             
             var foragingSpots = [
                 {
-                    type: 'apple',
+                    id: 1,
+                    type: 'Green Apple',
                     lat: 40.028646,
                     long: -83.020170,
                     picture: "image.png"
                 },
                 {
-                    type: 'apple',
+                    id: 2,
+                    type: 'Red Apple',
                     lat: 39.978120, 
                     long: -83.013111,
                     picture: "image2.png"
                 },
-                
+                {
+                    id: 3,
+                    type: 'Wood Ear Mushrooms',
+                    lat: 39.998120, 
+                    long: -83.017111,
+                    picture: "image2.png"
+                },
             ];
             
             for(var i=0, spot; spot = foragingSpots[i]; i++){
-                L.marker([spot.lat, spot.long]).addTo(map);
+                L.marker([spot.lat, spot.long])
+                 .bindPopup(createPopupHTML(spot))
+                 .openPopup()
+                 .addTo(map);
             }
             
+            function createPopupHTML(foragingSpot){
+                var returnHTML = "";
+                returnHTML += "<p>Type: " + spot.type +"</p>";
+                returnHTML += "<img src='"+spot.picture+"'></br>";
+                returnHTML += "<a href='#' onClick='loadSpot("+spot.id+")' class='moreInfoToggle'>More Information</a>";
+                return returnHTML;
+            }
             
-            
+            function loadSpot(id){
+            }
             
         </script>
     </body>
