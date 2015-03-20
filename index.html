@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Columbus Foraging</title>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <style>
+            #map { height: 100%; }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            //initialize map
+            var map = L.map('map').setView([40.036,-83.011], 12);
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            
+            //add known foraging spots.
+            
+            var foragingSpots = [
+                {
+                    type: 'apple',
+                    lat: 40.028646,
+                    long: -83.020170,
+                    picture: "image.png"
+                },
+                {
+                    type: 'apple',
+                    lat: 39.978120, 
+                    long: -83.013111,
+                    picture: "image2.png"
+                },
+                
+            ];
+            
+            for(var i=0, spot; spot = foragingSpots[i]; i++){
+                L.marker([spot.lat, spot.long]).addTo(map);
+            }
+            
+            
+            
+            
+        </script>
+    </body>
+</html>
